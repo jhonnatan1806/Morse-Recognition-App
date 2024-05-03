@@ -56,7 +56,7 @@ const UploadForm = () => {
     
         try {
             // Enviar la imagen en base64 al servidor
-            const response = await axios.post('http://localhost:5000/upload', {
+            const response = await axios.post('https://morse-recognition-backend.fly.dev/upload', {
                 image: base64Image,
                 subfolder: selectedVowel
             });

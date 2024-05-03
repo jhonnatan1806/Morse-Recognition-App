@@ -7,7 +7,7 @@ const OptionsModel = () => {
 	const trainModel = () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:5000/train')
+			.get('https://morse-recognition-backend.fly.dev/train')
 			.then((response) => {
 				if (response.status === 200) {
 					alert('Modelo entrenado correctamente');
@@ -24,7 +24,7 @@ const OptionsModel = () => {
 
 	const createDataset = () => {
 		axios
-			.get('http://localhost:5000/prepare')
+			.get('https://morse-recognition-backend.fly.dev/prepare')
 			.then((response) => {
 				if (response.status === 200) {
 					alert('Dataset actualizado correctamente');
@@ -38,15 +38,15 @@ const OptionsModel = () => {
 	};
 
 	const downloadModel = () => {
-		window.location.href = 'http://localhost:5000/download/trained_model.h5';
+		window.location.href = 'https://morse-recognition-backend.fly.dev/download/trained_model.h5';
 	};
 
 	const downloadDatasetX = () => {
-		window.location.href = 'http://localhost:5000/download/X.npy';
+		window.location.href = 'https://morse-recognition-backend.fly.dev/download/X.npy';
 	};
 
 	const downloadDatasetY = () => {
-		window.location.href = 'http://localhost:5000/download/y.npy';
+		window.location.href = 'https://morse-recognition-backend.fly.dev/download/y.npy';
 	};
 
 	return (

@@ -47,7 +47,7 @@ const TestModel = () => {
 
         try {
             // Enviar la imagen en base64 al servidor
-            const response = await axios.post('http://localhost:5000/predict', {
+            const response = await axios.post('https://morse-recognition-backend.fly.dev/predict', {
                 image: base64Image,
             });
             console.log(response.data);
