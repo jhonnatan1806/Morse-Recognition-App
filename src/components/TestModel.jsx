@@ -1,27 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { resizeImage } from '../utils';
+import {resizeImage } from '../utils';
 
-const UploadForm = () => {
+const TestModel = () => {
 	const canvasRef = useRef(null);
-	const [selectedVowel, setSelectedVowel] = useState('');
 	const [, setCanvasContext] = useState(null);
 	const [isDrawing, setIsDrawing] = useState(false);
+    const [data, setData] = useState(null);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		if (canvas) {
 			const context = canvas.getContext('2d');
-            context.lineWidth = 10;
+			context.lineWidth = 10;
 			context.lineCap = 'round';
 			context.strokeStyle = 'black';
 			setCanvasContext(context);
 		}
 	}, []);
-
-	const handleVowelChange = (event) => {
-		setSelectedVowel(event.target.value);
-	};
 
 	const startDrawing = (event) => {
 		setIsDrawing(true);
@@ -43,24 +39,19 @@ const UploadForm = () => {
 		context.stroke();
 	};
 
-	const handleUpload = async () => {
-        if (!selectedVowel) {
-            alert('Por favor selecciona una vocal');
-            return;
-        }
-    
+	const handlePredict = async () => {
+
         const canvas = canvasRef.current;
 
-        // Convertir la imagen redimensionada a base64
         const base64Image = await resizeImage(canvas, 200, 200);
-    
+
         try {
             // Enviar la imagen en base64 al servidor
-            const response = await axios.post('http://localhost:5000/upload', {
+            const response = await axios.post('http://localhost:5000/predict', {
                 image: base64Image,
-                subfolder: selectedVowel
             });
             console.log(response.data);
+            setData(response.data);
             alert('Imagen cargada exitosamente');
             handleReset();
         } catch (error) {
@@ -77,22 +68,11 @@ const UploadForm = () => {
 
 	return (
 		<section className="container flex flex-col gap-4">
-			<h2 className="text-lg">Cargar una vocal al modelo</h2>
-			<div className="flex gap-4 items-center">
-				<label htmlFor="vowel">Seleccione una vocal:</label>
-				<select
-					id="vowel"
-					value={selectedVowel}
-					onChange={handleVowelChange}
-					className="border-gray-200 px-4 py-1 border rounded-sm grow">
-                    <option value="">Seleccione una vocal</option>
-					<option value="A">A</option>
-					<option value="E">E</option>
-					<option value="I">I</option>
-					<option value="O">O</option>
-					<option value="U">U</option>
-				</select>
-			</div>
+			<h1 className="text-lg">Dibujar una vocal en código morse</h1>
+            <div>
+                <h2 className='text-base'>Vocal dibujada: {data !== null ? data.letter : ''}</h2>
+                <h3 className='text-base'>Exactitud: {data !== null ? Math.max(... data.prediction):'' }</h3>
+            </div>
 			<div>
 				<canvas
 					ref={canvasRef}
@@ -108,7 +88,7 @@ const UploadForm = () => {
 				<button className="bg-gray-500 hover:bg-gray-700 text-white px-6 py-2 rounded-sm w-fit ml-2" onClick={handleReset}>
 					Limpiar
 				</button>
-				<button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onClick={handleUpload}>
+				<button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onClick={handlePredict}>
 					Enviar Imagen
 				</button>
 			</div>
@@ -116,4 +96,4 @@ const UploadForm = () => {
 	);
 };
 
-export default UploadForm;
+export default TestModel;
