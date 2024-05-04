@@ -19,7 +19,7 @@ function App() {
 					<button
 						className={`py-2 px-4 rounded-t-md ${tabActive === 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
 						onClick={() => setTabActive(1)}>
-						Probar Modelo
+						Predecir con Modelo
 					</button>
 				</nav>
 				<div className="bg-slate-200 w-full h-0.5 mx-aut mb-4"></div>
